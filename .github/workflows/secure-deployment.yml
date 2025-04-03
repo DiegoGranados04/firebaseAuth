@@ -21,14 +21,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          organization: DiegoGranados04
-          projectKey: DiegoGranados04_firebaseAuth
-          projectBaseDir: .
+      - name: Install SonarCloud Scanner
+        run: npm install -g sonar-scanner
+
+      - name: Generate sonar-project.properties
+        run: |
+          echo "sonar.projectKey=DiegoGranados04_firebaseAuth" >> sonar-project.properties
+          echo "sonar.organization=DiegoGranados04" >> sonar-project.properties
+          echo "sonar.host.url=https://sonarcloud.io" >> sonar-project.properties
+          echo "sonar.javascript.lcov.reportPaths=coverage/lcov.info" >> sonar-project.properties
+          echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> sonar-project.properties
+
+      - name: Run SonarCloud Scanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: sonar-scanner
 
   unit-tests:
     needs: sonarqube-analysis
@@ -68,7 +75,7 @@ jobs:
     steps:
       - name: Enforce quality gates (placeholder)
         run: |
-          echo "Aquí podrías usar un script con la API de SonarCloud para validar el score y el coverage"
+          echo "Aquí podrías usar la API de SonarCloud para validar el score y el coverage"
           # exit 1 si el resultado no cumple con tus reglas
 
   deploy:
