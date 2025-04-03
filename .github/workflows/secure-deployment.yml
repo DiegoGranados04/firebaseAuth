@@ -8,7 +8,7 @@ on:
 
 jobs:
   sonarqube-analysis:
-    name: SonarQube Analysis
+    name: SonarCloud Analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,11 +21,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-github-action@main
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          organization: DiegoGranados04
+          projectKey: DiegoGranados04_firebaseAuth
+          projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   unit-tests:
     needs: sonarqube-analysis
@@ -63,9 +66,10 @@ jobs:
     needs: security-checks
     runs-on: ubuntu-latest
     steps:
-      - name: Enforce quality gates
+      - name: Enforce quality gates (placeholder)
         run: |
-          echo "Aquí podrías usar la API de SonarCloud para validar el score y coverage"
+          echo "Aquí podrías usar un script con la API de SonarCloud para validar el score y el coverage"
+          # exit 1 si el resultado no cumple con tus reglas
 
   deploy:
     needs: quality-gate
