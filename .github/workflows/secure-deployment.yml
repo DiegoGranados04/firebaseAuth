@@ -1,4 +1,4 @@
-x|name: Secure Deployment Pipeline
+name: Secure Deployment Pipeline
 
 on:
   push:
@@ -65,7 +65,7 @@ jobs:
     steps:
       - name: Enforce quality gates
         run: |
-          echo "Aquí podrías usar un script para validar quality gate, cobertura, etc."
+          echo "Aquí podrías usar la API de SonarCloud para validar el score y coverage"
 
   deploy:
     needs: quality-gate
